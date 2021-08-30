@@ -1,6 +1,13 @@
-
-import {Component, ViewChild, OnInit, ComponentFactoryResolver, ApplicationRef, Injector, OnDestroy } from '@angular/core';
-import {CdkPortal,DomPortalHost} from '@angular/cdk/portal';
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  ComponentFactoryResolver,
+  ApplicationRef,
+  Injector,
+  OnDestroy
+} from '@angular/core';
+import { CdkPortal, DomPortalHost } from '@angular/cdk/portal';
 
 /**
  * This component template wrap the projected content
@@ -16,7 +23,6 @@ import {CdkPortal,DomPortalHost} from '@angular/cdk/portal';
   `
 })
 export class WindowComponent implements OnInit, OnDestroy {
-
   // STEP 1: get a reference to the portal
   @ViewChild(CdkPortal) portal: CdkPortal;
 
@@ -27,28 +33,31 @@ export class WindowComponent implements OnInit, OnDestroy {
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private applicationRef: ApplicationRef,
-    private injector: Injector){}
+    private injector: Injector
+  ) {}
 
-
-  ngOnInit(){
+  ngOnInit() {
     // STEP 4: create an external window
-    this.externalWindow = window.open('', '', 'width=600,height=400,left=200,top=200');
+    this.externalWindow = window.open('', '', '');
 
-    // STEP 5: create a PortalHost with the body of the new window document    
+    // STEP 5: create a PortalHost with the body of the new window document
     const host = new DomPortalHost(
       this.externalWindow.document.body,
       this.componentFactoryResolver,
       this.applicationRef,
       this.injector
-      );
+    );
 
     // STEP 6: Attach the portal
     host.attach(this.portal);
+  }
+
+  ngAfterViewInit() {
     this.externalWindow.print();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     // STEP 7: close the window when this component destroyed
-    this.externalWindow.close()
+    this.externalWindow.close();
   }
 }

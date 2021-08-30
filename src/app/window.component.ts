@@ -58,6 +58,7 @@ export class WindowComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.externalWindow.print();
+    this.closed.emit(true);
   }
 
   ngOnDestroy() {

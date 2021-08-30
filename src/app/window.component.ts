@@ -5,7 +5,9 @@ import {
   ComponentFactoryResolver,
   ApplicationRef,
   Injector,
-  OnDestroy
+  OnDestroy,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import { CdkPortal, DomPortalHost } from '@angular/cdk/portal';
 
@@ -23,6 +25,8 @@ import { CdkPortal, DomPortalHost } from '@angular/cdk/portal';
   `
 })
 export class WindowComponent implements OnInit, OnDestroy {
+  @Output() closed = new EventEmitter<boolean>();
+
   // STEP 1: get a reference to the portal
   @ViewChild(CdkPortal) portal: CdkPortal;
 
@@ -57,6 +61,7 @@ export class WindowComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.closed.emit(true);
     // STEP 7: close the window when this component destroyed
     this.externalWindow.close();
   }
